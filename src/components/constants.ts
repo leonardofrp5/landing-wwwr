@@ -24,22 +24,21 @@ const Kms: IlistKms[] = [
 ];
 
 const Zones: IlistKms[] = [
-  { value: '1', label: 'Zona 1' },
-  { value: '2', label: 'Zona 2' },
-  { value: '3', label: 'Zona 3' },
-  { value: '4', label: 'Zona 4' },
-  { value: '5', label: 'Zona 5' }
+  { value: '1', label: 'Molinos' },
+  { value: '2', label: 'Parque de Alcalá' },
+  { value: '3', label: 'Simón Bolívar' },
+  { value: '4', label: 'Virrey' }
 ];
 
 const BloodType: IlistKms[] = [
-  { value: 'O-', label: 'O-' },
-  { value: 'O+', label: 'O+' },
-  { value: 'B-', label: 'B-' },
-  { value: 'B+', label: 'B+' },
-  { value: 'A-', label: 'A-' },
-  { value: 'A+', label: 'A+' },
-  { value: 'AB-', label: 'AB-' },
-  { value: 'AB+', label: 'AB+' }
+  { value: 'O-', label: 'O -' },
+  { value: 'O+', label: 'O +' },
+  { value: 'B-', label: 'B -' },
+  { value: 'B+', label: 'B +' },
+  { value: 'A-', label: 'A -' },
+  { value: 'A+', label: 'A +' },
+  { value: 'AB-', label: 'AB -' },
+  { value: 'AB+', label: 'AB +' }
 ];
 
 export { Kms, Zones, BloodType };
