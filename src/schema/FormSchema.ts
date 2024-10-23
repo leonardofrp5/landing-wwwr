@@ -20,7 +20,7 @@ export const FormSchema = z.object({
     required_error: 'El tipo de sangre es requerido'
   }),
   zone: z.string({
-    required_error: 'La zona es requerido'
+    required_error: 'La zona es requerida'
   }),
   kms: z
     .string()
@@ -31,14 +31,9 @@ export const FormSchema = z.object({
       message: 'No debe tener más de 2 caracteres'
     }),
   schedule: z.string({
-    required_error: 'El horario es requerido'
+    required_error: 'El tiempo de entrenamiento es requerido'
   }),
-  contact: z
-    .string()
-    .min(10, {
-      message: 'El contacto de emergencia es requerido'
-    })
-    .max(10, {
-      message: 'No debe tener más de 10 caracteres'
-    })
+  contact: z.string().refine(val => phone(val, { country: 'COL' }).isValid, {
+    message: 'Número de teléfono es inválido'
+  })
 });
