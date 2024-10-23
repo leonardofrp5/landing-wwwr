@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'With Women We Run',
   description: 'Corre seguro!',
   icons: {
-    icon: '/favicon.ico'
+    icon: '/favicon.png'
   }
 };
 
@@ -17,7 +17,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link rel="icon" href="/favicon.ico" />
       <body className={`${franklinBkcp.variable} ${franklinDmcp.variable} ${Peregrin.variable} antialiased`}>
         {children}
       </body>
