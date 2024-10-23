@@ -1,6 +1,7 @@
+import phone from 'phone';
 import { z } from 'zod';
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
   username: z
     .string()
     .min(1, {
@@ -12,6 +13,9 @@ const FormSchema = z.object({
     .max(50, {
       message: 'No debe tener más de 50 caracteres'
     }),
+  phoneNumber: z.string().refine(val => phone(val, { country: 'COL' }).isValid, {
+    message: 'Número de teléfono inválido'
+  }),
   rh: z.string({
     required_error: 'El tipo de sangre es requerido'
   }),
@@ -31,12 +35,10 @@ const FormSchema = z.object({
   }),
   contact: z
     .string()
-    .min(1, {
+    .min(10, {
       message: 'El contacto de emergencia es requerido'
     })
     .max(10, {
       message: 'No debe tener más de 10 caracteres'
     })
 });
-
-export { FormSchema };
