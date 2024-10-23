@@ -13,6 +13,8 @@ import { FormControl, FormField, FormItem, FormLabel, Form, FormMessage } from '
 import { FormSchema } from '@/schema/FormSchema';
 import { useState } from 'react';
 import EndSesions from './end-sesions';
+import { Checkbox } from './ui/checkbox';
+import Link from 'next/link';
 
 export default function RegisterForm() {
   const [sent, setSent] = useState<boolean>(false);
@@ -26,7 +28,8 @@ export default function RegisterForm() {
       zone: undefined,
       kms: '',
       schedule: undefined,
-      contact: ''
+      contact: '',
+      terms: false
     }
   });
 
@@ -201,6 +204,33 @@ export default function RegisterForm() {
               </div>
               <FormMessage className="font-franklinBkcp  mt-2" />
             </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="terms"
+          render={({ field }) => (
+            <>
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-none border p-4">
+                <FormControl>
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} className="bg-white" />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="font-franklinDmcp text-lg text-white ">
+                    He leído y acepto los
+                    <Link
+                      href="/TRATAMIENTO-DE-DATOS-WWWR.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      Términos y Condiciones de With Women We Run y la Política de priovacidad
+                    </Link>
+                  </FormLabel>
+                </div>
+              </FormItem>
+              <FormMessage className="font-franklinBkcp  mt-2" />
+            </>
           )}
         />
         <Button

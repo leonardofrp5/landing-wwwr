@@ -35,5 +35,8 @@ export const FormSchema = z.object({
   }),
   contact: z.string().refine(val => phone(val, { country: 'COL' }).isValid, {
     message: 'Número de teléfono es inválido'
+  }),
+  terms: z.boolean().refine(val => val === true, {
+    message: 'Es necesario aceptar Términos y Condiciones'
   })
 });
