@@ -11,8 +11,12 @@ import { IlistKms } from './interfaces';
 import { Button } from './ui/button';
 import { FormControl, FormField, FormItem, FormLabel, Form, FormMessage } from './ui/form';
 import { FormSchema } from '@/schema/FormSchema';
+import { useState } from 'react';
+import EndSesions from './end-sesions';
 
 export default function RegisterForm() {
+  const [sent, setSent] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -27,12 +31,13 @@ export default function RegisterForm() {
   });
 
   const onSubmit = (value: z.infer<typeof FormSchema>) => {
+    setSent(true);
     console.log(value);
   };
-  {
-    /* <EndSesions /> */
-  }
-  return (
+
+  return sent ? (
+    <EndSesions setSent={setSent} />
+  ) : (
     <Form {...form}>
       <h1 className="font-franklinDmcp text-white text-center text-lg mb-5 font-bold max-w-64">
         REGÍSTRATE Y COMPARTE TU ENTRENAMIENTO PARA CORRER SEGURO
@@ -58,7 +63,6 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="phoneNumber"
@@ -82,7 +86,6 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="rh"
