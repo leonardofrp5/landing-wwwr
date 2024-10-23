@@ -1,6 +1,8 @@
-type IlistKms = {
+export type IlistKms = {
   value: string;
   label: string;
 };
 
-export type { IlistKms };
+export interface EndSessionsProps {
+  setSent: React.Dispatch<React.SetStateAction<boolean>>;
+}
