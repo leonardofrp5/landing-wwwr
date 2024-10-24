@@ -1,8 +1,19 @@
-import { EndSessionsProps } from './interfaces'
+'use client'
 
-export default function EndSesions ({ setSent }: EndSessionsProps) {
+import { endSession } from '@/actions'
+import { useTransition } from 'react'
+
+interface Props {
+  id: string
+}
+
+export default function EndSesions ({ id }: Props) {
+  const [isPending, startTransition] = useTransition()
+
   const handleFinish = () => {
-    setSent(false)
+    startTransition(async () => {
+      await endSession(id)
+    })
   }
 
   return (
@@ -15,6 +26,7 @@ export default function EndSesions ({ setSent }: EndSessionsProps) {
       </span>
       <button
         type='submit'
+        disabled={isPending}
         onClick={handleFinish}
         className='flex justify-center pt-1 w-full font-franklinDmcp uppercase bg-white text-base text-black font-bold hover:bg-gray-300 transition'
       >

@@ -2,19 +2,25 @@ import Image from 'next/image'
 import LogoAdidas from '../../public/logo-adidas.jpg'
 import Logo from '../../public/logo.svg'
 import RegisterForm from '@/components/form'
+import { getActiveSession } from '@/actions'
+import EndSesions from '@/components/end-sesions'
 
-export default function Home () {
+const Home = async () => {
+  const id = await getActiveSession()
+
   return (
-    <div className='min-h-screen flex justify-between bg-black flex-col items-center py-6 px-8'>
+    <>
       <header className='flex flex-col justify-center items-center mb-4'>
-        <Image src={LogoAdidas} alt='With Women We Run' width={30} height={20} />
-        <Image src={Logo} alt='With Women We Run' width={200} height={100} />
+        <Image className='aspect-[30/20]' src={LogoAdidas} alt='With Women We Run' width={30} height={20} priority />
+        <Image src={Logo} className='aspect-square' alt='With Women We Run' width={150} height={150} priority />
       </header>
-      <RegisterForm />
+      {id ? <EndSesions id={id} /> : <RegisterForm />}
       <div className='flex flex-col text-white text-center mt-8'>
         <span className='font-franklinDmcp'>LÍNEAS DE ATENCIÓN LOCAL:</span>
         <span className='font-franklinBkcp'>300 198 1392 - 678 78 8889</span>
       </div>
-    </div>
+    </>
   )
 }
+
+export default Home

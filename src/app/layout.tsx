@@ -18,7 +18,9 @@ export default function RootLayout ({
   return (
     <html lang='en'>
       <body className={`${franklinBkcp.variable} ${franklinDmcp.variable} ${Peregrin.variable} antialiased`}>
-        {children}
+        <div className='min-h-screen flex justify-between bg-black flex-col items-center py-6 px-8'>
+          {children}
+        </div>
       </body>
     </html>
   )

@@ -6,6 +6,9 @@ import { FormValues } from '@/schema/FormSchema'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 
+const COOKIE_KEY = '__s_'
+const ERROR_MESSAGE = 'Something went wrong. Please try again later.'
+
 const reloadPage = () => {
   revalidatePath('/')
   revalidateTag('/')
@@ -13,12 +16,17 @@ const reloadPage = () => {
 
 export const getActiveSession = async () => {
   try {
-    await connectToDatabase()
     const cookieStore = cookies()
-    const id = cookieStore.get('__s')
-    return { error: null, id: id ?? null }
-  } catch (e) {
-    return { error: 'Something went wrong. Please try again later.' }
+    const id = cookieStore.get(COOKIE_KEY)?.value ?? null
+
+    await connectToDatabase()
+
+    await session.findById(id)
+
+    return id
+  } catch (trace) {
+    console.log({ trace, label: 'GET_ACTIVE_SESSION' })
+    return null
   }
 }
 
@@ -34,17 +42,16 @@ export const startSession = async (values: FormValues) => {
     if (saveSession._id) {
       cookieStore.set({
         value: `${saveSession._id as string}`,
-        name: '__s',
-        httpOnly: true,
-        secure: true,
-        path: '/'
+        name: COOKIE_KEY,
+        httpOnly: true
       })
     }
 
     reloadPage()
     return { error: null }
-  } catch (e) {
-    return { error: 'Something went wrong. Please try again later.' }
+  } catch (trace) {
+    console.log({ trace, label: 'START_SESSION' })
+    return { error: ERROR_MESSAGE }
   }
 }
 
@@ -61,10 +68,11 @@ export const endSession = async (id: string) => {
       await currentSession.save()
     }
 
-    cookieStore.delete('__s')
+    cookieStore.delete(COOKIE_KEY)
     reloadPage()
     return { error: null }
-  } catch (e) {
-    return { error: 'Something went wrong. Please try again later.' }
+  } catch (trace) {
+    console.log({ trace, label: 'END_SESSION' })
+    return { error: ERROR_MESSAGE }
   }
 }
