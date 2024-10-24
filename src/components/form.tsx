@@ -2,7 +2,6 @@
 
 import { useForm } from 'react-hook-form'
 import { Input } from './ui/input'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem, SelectGroup } from './ui/select'
@@ -10,16 +9,17 @@ import { BloodType, Zones, timeWorkOut } from './constants'
 import { IlistKms } from './interfaces'
 import { Button } from './ui/button'
 import { FormControl, FormField, FormItem, FormLabel, Form, FormMessage } from './ui/form'
-import { FormSchema } from '@/schema/FormSchema'
-import { useState } from 'react'
+import { FormSchema, FormValues } from '@/schema/FormSchema'
+import { useState, useTransition } from 'react'
 import EndSesions from './end-sesions'
 import { Checkbox } from './ui/checkbox'
 import Link from 'next/link'
+import { startSession } from '@/actions'
 
 export default function RegisterForm () {
   const [sent, setSent] = useState<boolean>(false)
 
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',
@@ -33,9 +33,14 @@ export default function RegisterForm () {
     }
   })
 
-  const onSubmit = (value: z.infer<typeof FormSchema>) => {
+  const [isPending, startTransition] = useTransition()
+
+  const onSubmit = (values: FormValues) => {
     setSent(true)
-    console.log(value)
+    startTransition(async () => {
+      const data = await startSession(values)
+      console.log({ data })
+    })
   }
 
   return sent
@@ -98,7 +103,7 @@ export default function RegisterForm () {
               <FormItem className='min-h-[99.2px]'>
                 <FormLabel className='font-franklinDmcp text-lg flex justify-center text-white '>RH:</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger className='font-franklinBkcp text-lg w-full text-white border rounded-none border-white rounded-1'>
+                  <SelectTrigger className='font-franklinBkcp text-lg w-full text-white border rounded-none border-white rounded-1  h-10'>
                     <SelectValue placeholder='Selecione el RH' />
                   </SelectTrigger>
                   <SelectContent>
@@ -124,7 +129,7 @@ export default function RegisterForm () {
                   Zona en la que corres:
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger className='font-franklinBkcp text-lg w-full text-white border rounded-none border-white rounded-1'>
+                  <SelectTrigger className='font-franklinBkcp text-lg w-full text-white border rounded-none border-white rounded-1  h-10'>
                     <SelectValue placeholder='Selecione una zona' />
                   </SelectTrigger>
                   <SelectContent>
@@ -152,7 +157,7 @@ export default function RegisterForm () {
                 <Input
                   type='number'
                   id='kms'
-                  className='font-franklinBkcp text-lg text-white rounded-none px-0 py-0'
+                  className='font-franklinBkcp text-lg text-white rounded-none'
                   {...field}
                 />
                 <FormMessage className='font-franklinBkcp  mt-2' />
@@ -168,7 +173,7 @@ export default function RegisterForm () {
                   Tiempo de entrenamiento:
                 </FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger className='font-franklinBkcp text-lg w-full text-white border rounded-none border-white rounded-1'>
+                  <SelectTrigger className='font-franklinBkcp text-lg w-full text-white border rounded-none border-white rounded-1 h-10'>
                     <SelectValue placeholder='Selecione una zona' />
                   </SelectTrigger>
                   <SelectContent>
@@ -219,7 +224,7 @@ export default function RegisterForm () {
                   </FormControl>
                   <div className='space-y-1 leading-none'>
                     <FormLabel className='font-franklinDmcp text-lg text-white '>
-                      He leído y acepto los
+                      He leído y acepto los {' '}
                       <Link
                         href='/TRATAMIENTO-DE-DATOS-WWWR.pdf'
                         target='_blank'
@@ -236,6 +241,7 @@ export default function RegisterForm () {
             )}
           />
           <Button
+            disabled={isPending}
             type='submit'
             className='font-franklinDmcp text-lg w-full bg-white text-black py-2 mt-5 font-bold rounded-none hover:bg-gray-300 transition'
           >

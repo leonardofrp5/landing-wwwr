@@ -40,3 +40,5 @@ export const FormSchema = z.object({
     message: 'Es necesario aceptar Términos y Condiciones'
   })
 })
+
+export type FormValues = z.infer<typeof FormSchema>
