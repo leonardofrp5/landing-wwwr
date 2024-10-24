@@ -1,4 +1,4 @@
-import { IlistKms } from './interfaces';
+import { IlistKms } from './interfaces'
 
 export const Kms: IlistKms[] = [
   { value: '1', label: '1 km' },
@@ -21,14 +21,14 @@ export const Kms: IlistKms[] = [
   { value: '18', label: '18 kms' },
   { value: '19', label: '19 kms' },
   { value: '20', label: '20 kms' }
-];
+]
 
 export const Zones: IlistKms[] = [
   { value: '1', label: 'Molinos' },
   { value: '2', label: 'Parque de Alcalá' },
   { value: '3', label: 'Simón Bolívar' },
   { value: '4', label: 'Virrey' }
-];
+]
 
 export const BloodType: IlistKms[] = [
   { value: 'O-', label: 'O -' },
@@ -39,7 +39,7 @@ export const BloodType: IlistKms[] = [
   { value: 'A+', label: 'A +' },
   { value: 'AB-', label: 'AB -' },
   { value: 'AB+', label: 'AB +' }
-];
+]
 
 export const timeWorkOut: IlistKms[] = [
   { value: '1', label: 'O min - 30 min' },
@@ -49,4 +49,4 @@ export const timeWorkOut: IlistKms[] = [
   { value: '5', label: '76 min - 90 min' },
   { value: '6', label: '91 min - 105 min' },
   { value: '67', label: 'Más de 2 horas' }
-];
+]

@@ -1,8 +1,8 @@
-import phone from 'phone';
-import { z } from 'zod';
+import phone from 'phone'
+import { z } from 'zod'
 
 export const FormSchema = z.object({
-  username: z
+  name: z
     .string()
     .min(1, {
       message: 'El nombre es requerido'
@@ -33,10 +33,10 @@ export const FormSchema = z.object({
   schedule: z.string({
     required_error: 'El tiempo de entrenamiento es requerido'
   }),
-  contact: z.string().refine(val => phone(val, { country: 'COL' }).isValid, {
+  emergencyPhoneNumber: z.string().refine(val => phone(val, { country: 'COL' }).isValid, {
     message: 'Número de teléfono es inválido'
   }),
-  terms: z.boolean().refine(val => val === true, {
+  terms: z.boolean().refine(val => val, {
     message: 'Es necesario aceptar Términos y Condiciones'
   })
-});
+})
