@@ -11,6 +11,7 @@ interface SessionI extends Document {
   countryCode: string
   scheduledTime: Date
   verificationAttemps: any[]
+  activeSession: boolean
 }
 
 export const SessionSchema = new Schema({
@@ -21,6 +22,7 @@ export const SessionSchema = new Schema({
   kms: { type: String, required: true },
   emergencyPhoneNumber: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
+  activeSession: { type: Boolean, default: true },
   countryCode: { type: String, required: true, default: '+57' },
   scheduledTime: { type: Date, required: true },
   verificationAttemps: { type: Array, require: false }
@@ -28,4 +30,4 @@ export const SessionSchema = new Schema({
   timestamps: true
 })
 
-export const Session: Model<SessionI> = mongoose.models.Session || mongoose.model<SessionI>('Session', SessionSchema)
+export const session: Model<SessionI> = mongoose.models.Session || mongoose.model<SessionI>('Session', SessionSchema)
