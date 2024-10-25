@@ -19,7 +19,7 @@ export const FormSchema = z.object({
   rh: z.string({
     required_error: 'El tipo de sangre es requerido'
   }),
-  zone: z.string({
+  location: z.string({
     required_error: 'La zona es requerida'
   }),
   kms: z

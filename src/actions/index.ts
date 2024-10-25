@@ -1,5 +1,6 @@
 'use server'
 
+import { getScheduleTime } from '@/lib/dates'
 import { connectToDatabase } from '@/lib/db'
 import { session } from '@/models/session'
 import { FormValues } from '@/schema/FormSchema'
@@ -19,6 +20,8 @@ export const getActiveSession = async () => {
     const cookieStore = cookies()
     const id = cookieStore.get(COOKIE_KEY)?.value ?? null
 
+    if (!id) return null
+
     await connectToDatabase()
 
     await session.findById(id)
@@ -30,13 +33,21 @@ export const getActiveSession = async () => {
   }
 }
 
-export const startSession = async (values: FormValues) => {
+export const startSession = async ({ schedule, terms, ...values }: FormValues) => {
   try {
     const cookieStore = cookies()
     await connectToDatabase()
 
+    const scheduledTime = getScheduleTime(schedule)
+
+    console.log({
+      ...values,
+      scheduledTime
+    })
+
     const saveSession = await session.create({
-      ...values
+      ...values,
+      scheduledTime
     })
 
     if (saveSession._id) {

@@ -22,10 +22,10 @@ export default function RegisterForm () {
     defaultValues: {
       name: '',
       phoneNumber: '',
-      rh: undefined,
-      zone: undefined,
+      rh: '',
+      location: '',
       kms: '',
-      schedule: undefined,
+      schedule: '',
       emergencyPhoneNumber: '',
       terms: false
     }
@@ -117,7 +117,7 @@ export default function RegisterForm () {
         />
         <FormField
           control={form.control}
-          name='zone'
+          name='location'
           render={({ field }) => (
             <FormItem className='min-h-[99.2px]'>
               <FormLabel className='font-franklinDmcp text-lg flex justify-center text-white '>

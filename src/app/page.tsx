@@ -12,7 +12,7 @@ const Home = async () => {
     <>
       <header className='flex flex-col justify-center items-center mb-4'>
         <Image className='aspect-[30/20]' src={LogoAdidas} alt='With Women We Run' width={30} height={20} priority />
-        <Image src={Logo} className='aspect-square' alt='With Women We Run' width={150} height={150} priority />
+        <Image src={Logo} className='aspect-square' alt='With Women We Run' width={200} height={200} priority />
       </header>
       {id ? <EndSesions id={id} /> : <RegisterForm />}
       <div className='flex flex-col text-white text-center mt-8'>
