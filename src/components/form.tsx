@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { Input } from './ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-
+import { toast } from 'react-toastify'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem, SelectGroup } from './ui/select'
 import { BloodType, Zones, timeWorkOut } from './constants'
 import { IlistKms } from './interfaces'
@@ -22,10 +22,10 @@ export default function RegisterForm () {
     defaultValues: {
       name: '',
       phoneNumber: '',
-      rh: '',
-      location: '',
+      rh: undefined,
+      location: undefined,
       kms: '',
-      schedule: '',
+      schedule: undefined,
       emergencyPhoneNumber: '',
       terms: false
     }
@@ -36,9 +36,7 @@ export default function RegisterForm () {
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
       const { error } = await startSession(values)
-      if (error) {
-        console.log('error')
-      }
+      if (error) toast.error(error)
     })
   }
 
@@ -240,7 +238,7 @@ export default function RegisterForm () {
           type='submit'
           className='font-franklinDmcp text-lg w-full bg-white text-black py-2 mt-5 font-bold rounded-none hover:bg-gray-300 transition'
         >
-          ¡CORRE SEGURO AHORA!
+          {isPending ? 'INICIANDO SESION  . . ' : '¡CORRE SEGURO AHORA!'}
         </Button>
       </form>
     </Form>

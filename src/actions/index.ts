@@ -1,14 +1,11 @@
 'use server'
 
-import { getScheduleTime } from '@/lib/dates'
-import { connectToDatabase } from '@/lib/db'
-import { session } from '@/models/session'
+import { COOKIE_KEY, ERROR_MESSAGE } from '@/config'
+import { createSesion, getSessionById, updateSession } from '@/core/reporsitories/session.repository'
+import { getErrorMessage } from '@/lib/customError'
 import { FormValues } from '@/schema/FormSchema'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
-
-const COOKIE_KEY = '__s_'
-const ERROR_MESSAGE = 'Something went wrong. Please try again later.'
 
 const reloadPage = () => {
   revalidatePath('/')
@@ -18,72 +15,39 @@ const reloadPage = () => {
 export const getActiveSession = async () => {
   try {
     const cookieStore = cookies()
-    const id = cookieStore.get(COOKIE_KEY)?.value ?? null
+    const id = cookieStore.get(COOKIE_KEY)?.value
 
     if (!id) return null
 
-    await connectToDatabase()
+    const currentSession = await getSessionById(id)
 
-    await session.findById(id)
-
-    return id
+    return currentSession ? id : null
   } catch (trace) {
-    console.log({ trace, label: 'GET_ACTIVE_SESSION' })
     return null
   }
 }
 
-export const startSession = async ({ schedule, terms, ...values }: FormValues) => {
+export const startSession = async (values: FormValues) => {
   try {
+    const id = await createSesion(values)
+    if (!id) return { error: ERROR_MESSAGE }
     const cookieStore = cookies()
-    await connectToDatabase()
-
-    const scheduledTime = getScheduleTime(schedule)
-
-    console.log({
-      ...values,
-      scheduledTime
-    })
-
-    const saveSession = await session.create({
-      ...values,
-      scheduledTime
-    })
-
-    if (saveSession._id) {
-      cookieStore.set({
-        value: `${saveSession._id as string}`,
-        name: COOKIE_KEY,
-        httpOnly: true
-      })
-    }
-
+    cookieStore.set({ name: COOKIE_KEY, value: id.toString(), httpOnly: true })
     reloadPage()
     return { error: null }
   } catch (trace) {
-    console.log({ trace, label: 'START_SESSION' })
-    return { error: ERROR_MESSAGE }
+    return { error: getErrorMessage(trace) }
   }
 }
 
 export const endSession = async (id: string) => {
   try {
+    await updateSession(id)
     const cookieStore = cookies()
-    await connectToDatabase()
-
-    const currentSession = await session.findById(id)
-
-    if (currentSession) {
-      currentSession.activeSession = false
-      currentSession.isVerified = true
-      await currentSession.save()
-    }
-
     cookieStore.delete(COOKIE_KEY)
     reloadPage()
     return { error: null }
   } catch (trace) {
-    console.log({ trace, label: 'END_SESSION' })
-    return { error: ERROR_MESSAGE }
+    return { error: getErrorMessage(trace) }
   }
 }

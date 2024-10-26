@@ -15,7 +15,7 @@ const Home = async () => {
         <Image src={Logo} className='aspect-square' alt='With Women We Run' width={200} height={200} priority />
       </header>
       {id ? <EndSesions id={id} /> : <RegisterForm />}
-      <div className='flex flex-col text-white text-center mt-8'>
+      <div className='flex flex-col text-white text-center mt-8 h-full'>
         <span className='font-franklinDmcp'>LÍNEAS DE ATENCIÓN LOCAL:</span>
         <span className='font-franklinBkcp'>300 198 1392 - 678 78 8889</span>
       </div>

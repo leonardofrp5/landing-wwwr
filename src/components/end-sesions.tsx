@@ -30,7 +30,7 @@ export default function EndSesions ({ id }: Props) {
         onClick={handleFinish}
         className='flex justify-center pt-1 w-full font-franklinDmcp uppercase bg-white text-base text-black font-bold hover:bg-gray-300 transition'
       >
-        Finaliza tu corrida
+        {isPending ? 'FINALIZANDO SESION  . . ' : 'FINALIZAR CORRIDA'}
       </button>
     </div>
   )
