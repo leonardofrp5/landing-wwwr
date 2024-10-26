@@ -2,6 +2,7 @@
 
 import { endSession } from '@/actions'
 import { useTransition } from 'react'
+import { toast } from 'react-toastify'
 
 interface Props {
   id: string
@@ -12,7 +13,8 @@ export default function EndSesions ({ id }: Props) {
 
   const handleFinish = () => {
     startTransition(async () => {
-      await endSession(id)
+      const { error } = await endSession(id)
+      if (error) toast.error(error)
     })
   }
 
