@@ -1,7 +1,8 @@
 'use server'
 
-import { connectToDatabase } from '@/lib/db'
-import { session } from '@/models/session'
+import { COOKIE_KEY, ERROR_MESSAGE } from '@/config'
+import { createSesion, getSessionById, updateSession } from '@/core/reporsitories/session.repository'
+import { getErrorMessage } from '@/lib/customError'
 import { FormValues } from '@/schema/FormSchema'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
@@ -13,58 +14,40 @@ const reloadPage = () => {
 
 export const getActiveSession = async () => {
   try {
-    await connectToDatabase()
     const cookieStore = cookies()
-    const id = cookieStore.get('__s')
-    return { error: null, id: id ?? null }
-  } catch (e) {
-    return { error: 'Something went wrong. Please try again later.' }
+    const id = cookieStore.get(COOKIE_KEY)?.value
+
+    if (!id) return null
+
+    const currentSession = await getSessionById(id)
+
+    return currentSession ? id : null
+  } catch (trace) {
+    return null
   }
 }
 
 export const startSession = async (values: FormValues) => {
   try {
+    const id = await createSesion(values)
+    if (!id) return { error: ERROR_MESSAGE }
     const cookieStore = cookies()
-    await connectToDatabase()
-
-    const saveSession = await session.create({
-      ...values
-    })
-
-    if (saveSession._id) {
-      cookieStore.set({
-        value: `${saveSession._id as string}`,
-        name: '__s',
-        httpOnly: true,
-        secure: true,
-        path: '/'
-      })
-    }
-
+    cookieStore.set({ name: COOKIE_KEY, value: id.toString(), httpOnly: true })
     reloadPage()
     return { error: null }
-  } catch (e) {
-    return { error: 'Something went wrong. Please try again later.' }
+  } catch (trace) {
+    return { error: getErrorMessage(trace) }
   }
 }
 
 export const endSession = async (id: string) => {
   try {
+    await updateSession(id)
     const cookieStore = cookies()
-    await connectToDatabase()
-
-    const currentSession = await session.findById(id)
-
-    if (currentSession) {
-      currentSession.activeSession = false
-      currentSession.isVerified = true
-      await currentSession.save()
-    }
-
-    cookieStore.delete('__s')
+    cookieStore.delete(COOKIE_KEY)
     reloadPage()
     return { error: null }
-  } catch (e) {
-    return { error: 'Something went wrong. Please try again later.' }
+  } catch (trace) {
+    return { error: getErrorMessage(trace) }
   }
 }

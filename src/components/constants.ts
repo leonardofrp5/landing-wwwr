@@ -42,11 +42,11 @@ export const BloodType: IlistKms[] = [
 ]
 
 export const timeWorkOut: IlistKms[] = [
-  { value: '1', label: 'O min - 30 min' },
-  { value: '2', label: '31 min - 45 min' },
-  { value: '3', label: '46 min - 60 min' },
-  { value: '4', label: '61 min - 75 min' },
-  { value: '5', label: '76 min - 90 min' },
-  { value: '6', label: '91 min - 105 min' },
-  { value: '67', label: 'Más de 2 horas' }
+  { value: '30', label: 'O min - 30 min' },
+  { value: '45', label: '31 min - 45 min' },
+  { value: '60', label: '46 min - 60 min' },
+  { value: '75', label: '61 min - 75 min' },
+  { value: '90', label: '76 min - 90 min' },
+  { value: '105', label: '91 min - 105 min' },
+  { value: '120', label: 'Más de 2 horas' }
 ]
