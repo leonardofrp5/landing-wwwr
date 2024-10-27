@@ -9,8 +9,6 @@ import { CustomError } from '@/lib/customError'
 
 export const getSessionById = async (id: string) => {
   await connectToDatabase()
-  const all = await session.find()
-  console.log(JSON.stringify(all))
   return session.findById(id)
 }
 
