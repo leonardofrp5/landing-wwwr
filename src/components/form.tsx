@@ -224,7 +224,7 @@ export default function RegisterForm () {
                       rel='noopener noreferrer'
                       className='underline'
                     >
-                      Términos y Condiciones de With Women We Run y la Política de priovacidad
+                      Términos y Condiciones de With Women We Run y la Política de privacidad
                     </Link>
                   </FormLabel>
                 </div>

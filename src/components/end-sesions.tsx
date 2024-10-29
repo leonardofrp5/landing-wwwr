@@ -30,7 +30,7 @@ export default function EndSesions ({ id }: Props) {
         type='submit'
         disabled={isPending}
         onClick={handleFinish}
-        className='flex justify-center pt-1 w-full font-franklinDmcp uppercase bg-white text-base text-black font-bold hover:bg-gray-300 transition'
+        className='flex justify-center pt-1 w-full font-franklinDmcp uppercase bg-white text-base text-black font-bold hover:bg-gray-300 transition animate-ping-subtle-slow shadow-md shadow-white/50'
       >
         {isPending ? 'FINALIZANDO SESION  . . ' : 'FINALIZAR CORRIDA'}
       </button>
