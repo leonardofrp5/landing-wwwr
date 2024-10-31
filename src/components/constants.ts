@@ -24,10 +24,10 @@ export const Kms: IlistKms[] = [
 ]
 
 export const Zones: IlistKms[] = [
-  { value: '1', label: 'Molinos' },
-  { value: '2', label: 'Parque de Alcalá' },
-  { value: '3', label: 'Simón Bolívar' },
-  { value: '4', label: 'Virrey' }
+  { value: 'Molinos', label: 'Molinos' },
+  { value: 'Parque de Alcalá', label: 'Parque de Alcalá' },
+  { value: 'Simón Bolívar', label: 'Simón Bolívar' },
+  { value: 'Virrey', label: 'Virrey' }
 ]
 
 export const BloodType: IlistKms[] = [

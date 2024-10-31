@@ -6,6 +6,7 @@ import { getScheduleTime } from '@/lib/dates'
 import mongoose from 'mongoose'
 import { sendSMS } from '@/lib/messages'
 import { CustomError } from '@/lib/customError'
+import { contactMessagesTemplate, userMessagesTemplate } from '@/lib/msm-text'
 
 export const getSessionById = async (id: string) => {
   await connectToDatabase()
@@ -45,9 +46,9 @@ export const createSesion = async (values: FormValues) => {
       session: transaction
     })
 
-    const send = await sendSMS('3138637341', 'Este mensaje se enta enviando automatico')
+    const send = await Promise.allSettled([sendSMS(values.phoneNumber, userMessagesTemplate(values.name)), sendSMS(values.emergencyPhoneNumber, contactMessagesTemplate({userName: values.name, location: values.location, kms: values.kms})) ])
 
-    if (!send) {
+    if (!send.every(promise => promise.status === 'fulfilled')) {
       await transaction.abortTransaction()
       await transaction.endSession()
       throw new CustomError('Por favor verifica que el número de telefono ingresado sea valido.')
