@@ -46,7 +46,7 @@ export const createSesion = async (values: FormValues) => {
       session: transaction
     })
 
-    const send = await Promise.allSettled([sendSMS(values.phoneNumber, userMessagesTemplate(values.name)), sendSMS(values.emergencyPhoneNumber, contactMessagesTemplate({userName: values.name, location: values.location, kms: values.kms})) ])
+    const send = await Promise.allSettled([sendSMS(values.phoneNumber, userMessagesTemplate(values.name)), sendSMS(values.emergencyPhoneNumber, contactMessagesTemplate({ userName: values.name, location: values.location, kms: values.kms }))])
 
     if (!send.every(promise => promise.status === 'fulfilled')) {
       await transaction.abortTransaction()
