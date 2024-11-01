@@ -4,14 +4,13 @@ import { logger } from '@/lib/logger'
 import { FormValues } from '@/schema/FormSchema'
 import { getScheduleTime } from '@/lib/dates'
 import mongoose from 'mongoose'
-import { sendSMS } from '@/lib/messages'
+
 import { CustomError } from '@/lib/customError'
 import { contactMessagesTemplate, userMessagesTemplate } from '@/lib/msm-text'
+import { sendSMS } from '@/lib/asw-sns'
 
 export const getSessionById = async (id: string) => {
   await connectToDatabase()
-  const all = await session.find()
-  console.log(JSON.stringify(all))
   return session.findById(id)
 }
 
