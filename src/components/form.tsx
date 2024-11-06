@@ -1,27 +1,28 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import { Input } from './ui/input'
+import { FormSchema, FormValues } from '@/schema/form.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTransition } from 'react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem, SelectGroup } from './ui/select'
 import { BloodType, Zones, timeWorkOut } from './constants'
 import { IlistKms } from './interfaces'
-import { Button } from './ui/button'
-import { FormControl, FormField, FormItem, FormLabel, Form, FormMessage } from './ui/form'
-import { FormSchema, FormValues } from '@/schema/FormSchema'
-import { useTransition } from 'react'
+import { Button, buttonVariants } from './ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Input } from './ui/input'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
-import { Checkbox } from './ui/checkbox'
-import Link from 'next/link'
 import { startSession } from '@/actions'
+import Link from 'next/link'
+import { Checkbox } from './ui/checkbox'
+import { cn } from '@/lib/utils'
 
-export default function RegisterForm () {
+export default function RegisterForm ({ phone }: { phone?: string }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',
-      phoneNumber: '',
+      phoneNumber: phone ?? '',
       rh: undefined,
       location: undefined,
       kms: '',
@@ -81,6 +82,7 @@ export default function RegisterForm () {
                 <Input
                   type='number'
                   id='contact'
+                  readOnly
                   className='font-franklinBkcp text-lg text-white rounded-none'
                   {...field}
                 />
@@ -233,13 +235,25 @@ export default function RegisterForm () {
             </>
           )}
         />
-        <Button
-          disabled={isPending}
-          type='submit'
-          className='font-franklinDmcp text-lg w-full bg-white text-black py-2 mt-5 font-bold rounded-none hover:bg-gray-300 transition'
-        >
-          {isPending ? 'INICIANDO SESION  . . ' : '¡CORRE SEGURO AHORA!'}
-        </Button>
+
+        <div className='flex gap-2 items-center mt-5'>
+          <Link
+            className={cn(buttonVariants({ className: 'font-franklinDmcp text-lg w-full  py-2 font-bold rounded-none !bg-transparent text-white hover:text-slate-300 border-white max-w-fit px-8', variant: 'outline' }), {
+              'pointer-events-none': isPending
+            })}
+            href='/'
+          >
+            SALIR
+          </Link>
+          <Button
+            disabled={isPending}
+            type='submit'
+            className='font-franklinDmcp text-lg w-full bg-white text-black py-2 font-bold rounded-none hover:bg-gray-300 transition'
+          >
+            {isPending ? 'INICIANDO SESION  . . ' : '¡CORRE SEGURO AHORA!'}
+          </Button>
+        </div>
+
       </form>
     </Form>
   )

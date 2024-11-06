@@ -1,7 +1,7 @@
 import { connectToDatabase } from '@/lib/db'
 import { session } from '../models/session'
 import { logger } from '@/lib/logger'
-import { FormValues } from '@/schema/FormSchema'
+import { FormValues } from '@/schema/form.schema'
 import { getScheduleTime } from '@/lib/dates'
 import mongoose from 'mongoose'
 
@@ -12,6 +12,15 @@ import { sendSMS } from '@/lib/asw-sns'
 export const getSessionById = async (id: string) => {
   await connectToDatabase()
   return session.findById(id)
+}
+
+export const getSessionByPhone = async (phone: string) => {
+  await connectToDatabase()
+
+  return session.findOne({
+    phoneNumber: phone,
+    activeSession: true
+  }).sort({ createdAt: -1 }).lean()
 }
 
 export const updateSession = async (id: string) => {
