@@ -9,7 +9,7 @@ import { BloodType, Zones, timeWorkOut } from './constants'
 import { IlistKms } from './interfaces'
 import { Button } from './ui/button'
 import { FormControl, FormField, FormItem, FormLabel, Form, FormMessage } from './ui/form'
-import { FormSchema, FormValues } from '@/schema/FormSchema'
+import { FormSchema, FormValues } from '@/schema/form.schema'
 import { useTransition } from 'react'
 
 import { Checkbox } from './ui/checkbox'

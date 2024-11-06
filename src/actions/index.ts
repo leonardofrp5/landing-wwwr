@@ -3,7 +3,7 @@
 import { COOKIE_KEY, ERROR_MESSAGE } from '@/config'
 import { createSesion, getSessionById, updateSession } from '@/core/reporsitories/session.repository'
 import { getErrorMessage } from '@/lib/customError'
-import { FormValues } from '@/schema/FormSchema'
+import { FormValues } from '@/schema/form.schema'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 
@@ -12,13 +12,14 @@ const reloadPage = () => {
   revalidateTag('/')
 }
 
-export const getActiveSession = async () => {
+export const getActiveSession = async (phone: string) => {
   try {
     const cookieStore = cookies()
     const id = cookieStore.get(COOKIE_KEY)?.value
 
     if (!id) return null
 
+    // AQUI DEBO BUSCAR EL PHONE
     const currentSession = await getSessionById(id)
 
     return currentSession ? id : null

@@ -1,7 +1,7 @@
 import { connectToDatabase } from '@/lib/db'
 import { session } from '../models/session'
 import { logger } from '@/lib/logger'
-import { FormValues } from '@/schema/FormSchema'
+import { FormValues } from '@/schema/form.schema'
 import { getScheduleTime } from '@/lib/dates'
 import mongoose from 'mongoose'
 
