@@ -14,6 +14,15 @@ export const getSessionById = async (id: string) => {
   return session.findById(id)
 }
 
+export const getSessionByPhone = async (phone: string) => {
+  await connectToDatabase()
+
+  return session.findOne({
+    phoneNumber: phone,
+    activeSession: true
+  }).sort({ createdAt: -1 }).lean()
+}
+
 export const updateSession = async (id: string) => {
   try {
     const currentSession = await getSessionById(id)

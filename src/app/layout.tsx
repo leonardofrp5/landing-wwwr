@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import './globals.css'
-import { franklinBkcp, franklinDmcp, Peregrin } from './fonts'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { franklinBkcp, franklinDmcp, Peregrin } from './fonts'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'With Women We Run',

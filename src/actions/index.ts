@@ -1,11 +1,12 @@
 'use server'
 
-import { COOKIE_KEY, ERROR_MESSAGE } from '@/config'
-import { createSesion, getSessionById, updateSession } from '@/core/reporsitories/session.repository'
+import { ERROR_MESSAGE } from '@/config'
+import { createSesion, getSessionByPhone, updateSession } from '@/core/reporsitories/session.repository'
 import { getErrorMessage } from '@/lib/customError'
 import { FormValues } from '@/schema/form.schema'
+import { PhoneSchema } from '@/schema/phone.schema'
 import { revalidatePath, revalidateTag } from 'next/cache'
-import { cookies } from 'next/headers'
+import { notFound } from 'next/navigation'
 
 const reloadPage = () => {
   revalidatePath('/')
@@ -14,17 +15,16 @@ const reloadPage = () => {
 
 export const getActiveSession = async (phone: string) => {
   try {
-    const cookieStore = cookies()
-    const id = cookieStore.get(COOKIE_KEY)?.value
+    const validateFields = PhoneSchema.safeParse({
+      phoneNumber: phone
+    })
 
-    if (!id) return null
-
-    // AQUI DEBO BUSCAR EL PHONE
-    const currentSession = await getSessionById(id)
-
-    return currentSession ? id : null
-  } catch (trace) {
-    return null
+    if (!validateFields.success) notFound()
+    const currentSession = await getSessionByPhone(phone)
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    return currentSession ? currentSession._id?.toString() : null
+  } catch {
+    notFound()
   }
 }
 
@@ -32,8 +32,6 @@ export const startSession = async (values: FormValues) => {
   try {
     const id = await createSesion(values)
     if (!id) return { error: ERROR_MESSAGE }
-    const cookieStore = cookies()
-    cookieStore.set({ name: COOKIE_KEY, value: id.toString(), httpOnly: true })
     reloadPage()
     return { error: null }
   } catch (trace) {
@@ -44,9 +42,6 @@ export const startSession = async (values: FormValues) => {
 export const endSession = async (id: string) => {
   try {
     await updateSession(id)
-    const cookieStore = cookies()
-    cookieStore.delete(COOKIE_KEY)
-    reloadPage()
     return { error: null }
   } catch (trace) {
     return { error: getErrorMessage(trace) }

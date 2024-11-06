@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import Logo from '../../public/logo.svg'
-import LogoWwwr from '../../public/logo-wwwr.svg'
 import PhoneForm from '@/components/phone-form'
+import Image from 'next/image'
+import LogoWwwr from '../../public/logo-wwwr.svg'
+import Logo from '../../public/logo.svg'
 
 const Home = async () => {
   return (

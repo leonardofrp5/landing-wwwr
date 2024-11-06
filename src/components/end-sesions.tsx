@@ -1,6 +1,7 @@
 'use client'
 
 import { endSession } from '@/actions'
+import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { toast } from 'react-toastify'
 
@@ -10,11 +11,17 @@ interface Props {
 
 export default function EndSesions ({ id }: Props) {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const handleFinish = () => {
     startTransition(async () => {
       const { error } = await endSession(id)
-      if (error) toast.error(error)
+      if (error) {
+        toast.error(error)
+        return
+      }
+      toast.success('Su sesión ha finalizado con exito')
+      router.replace('/')
     })
   }
 
