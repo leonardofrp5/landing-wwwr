@@ -56,6 +56,7 @@ export default function PhoneForm () {
 
           <Button
             type='submit'
+            disabled
             className='font-franklinDmcp text-lg w-full bg-white text-black py-2 font-bold rounded-none hover:bg-gray-300 transition'
           >
             INGRESAR
